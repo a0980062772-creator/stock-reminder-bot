@@ -98,9 +98,7 @@ def fetch_stock_data_for_reminder():
         df['連結'] = df.apply(lambda row: ta_helpers.get_stock_url(row['代號']), axis=1)
     return df
 
-    except Exception as e:
-        logger.error(f"讀取試算表失敗: {e}")
-        return pd.DataFrame()
+
 
 # --- 5. 核心執行任務 ---
 async def run_analysis_and_send(bot):
