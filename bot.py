@@ -88,15 +88,16 @@ def fetch_stock_data_for_reminder():
         
         # 確保必要的名稱欄位存在
     if '名稱' not in df.columns:
-         df.rename(columns={df.columns[1]: '名稱'}, inplace=True)
-        
+        df.rename(columns={df.columns[1]: '名稱'}, inplace=True)
+
     df = df[df['代號'].astype(bool)].copy()
     provider_col = '提供者'
     if provider_col not in df.columns: df[provider_col] = ''
-        
-        if ta_helpers:
-            df['連結'] = df.apply(lambda row: ta_helpers.get_static_link(row['代號'], row[provider_col]), axis=1)
-        return df
+
+    if ta_helpers:
+        df['連結'] = df.apply(lambda row: ta_helpers.get_stock_url(row['代號']), axis=1)
+    return df
+
     except Exception as e:
         logger.error(f"讀取試算表失敗: {e}")
         return pd.DataFrame()
