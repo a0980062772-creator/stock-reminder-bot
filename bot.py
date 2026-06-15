@@ -66,16 +66,25 @@ def get_google_sheets_client():
     except: return None
 
 def fetch_stock_data_for_reminder():
-    try:
-        gc = get_google_sheets_client()
-        if not gc: return pd.DataFrame()
-        spreadsheet = gc.open(SPREADSHEET_NAME)
-        worksheet = spreadsheet.worksheet("工作表1")
-        data = worksheet.get_all_values()
-        if len(data) < 2: return pd.DataFrame()
-        
-        df = pd.DataFrame(data[1:], columns=data[0])
-        df['代號'] = df['代號'].str.strip()
+    # 直接在程式碼中寫死你想監控的特定台股與指標欄位
+    data = [
+        ['代號', '名稱', '五日均線大於二十日均線', '每日收盤價小於布林通道下軌', 'kd黃金交叉', 'k小於20且kd黃金交叉', 'k值大於80且kd死亡交叉', '成交量暴增', '三大法人連續買超', '提供者'],
+        ['2356.tw', '英業達', '1', '0', '1', '0', '0', '0', '0', ''],
+        ['6443.tw', '元晶', '1', '0', '1', '0', '0', '0', '0', ''],
+        ['1718.tw', '中纖', '1', '0', '1', '0', '0', '0', '0', ''],
+        ['2324.tw', '仁寶', '1', '0', '1', '0', '0', '0', '0', ''],
+        ['2409.tw', '友達', '1', '0', '1', '0', '0', '0', '0', ''],
+        ['9105.tw', '泰金寶-DR', '1', '0', '1', '0', '0', '0', '0', ''],
+        ['6116.tw', '彩晶', '1', '0', '1', '0', '0', '0', '0', ''],
+        ['3481.tw', '群創', '1', '0', '1', '0', '0', '0', '0', '']
+    ]
+
+    
+    # 以下保留原專案的資料轉換邏輯，確保後續運作正常
+    df = pd.DataFrame(data[1:], columns=data[0])
+    df['代號'] = df['代號'].str.strip()
+    
+
         
         # 確保必要的名稱欄位存在
         if '名稱' not in df.columns:
